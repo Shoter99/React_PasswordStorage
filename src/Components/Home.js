@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import {getAuth, onAuthStateChanged } from 'firebase/auth'
+import firestore from 'firebase/firestore'
 import { useNavigate } from 'react-router-dom'
 import GridElement from './GridElement'
 const Home = () => {
   const [uid, setUid] = useState("")
   const auth = getAuth()
+  const usersCollection = firestore().collection("password")
   let navigate = useNavigate()
   onAuthStateChanged(auth, (user) =>{
     if (user){
@@ -18,6 +20,12 @@ const Home = () => {
   const signOut = () =>{
     auth.signOut()
   }
+  // const addDocument = async () =>{
+  //   await setDoc(doc(db,"passwords"),{
+
+  //   })
+  // }
+
   return (
     <div>
         <div className='signOut'>
