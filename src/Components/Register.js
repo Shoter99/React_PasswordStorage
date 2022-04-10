@@ -16,14 +16,16 @@ const Register = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredentials) =>{
         const user=userCredentials.user
+        navigate('/login')
       })
       .catch((error) =>{
         const errorCode = error.code
         const errorMessage = error.message
         console.log(errorCode, errorMessage)
+        alert(errorMessage)
       })
     
-      navigate('/login')
+
     
   }
   return (

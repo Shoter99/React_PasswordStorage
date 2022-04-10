@@ -70,6 +70,70 @@ body{
   
   
 }
+.grid-wrapper{
+  margin: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 2rem;
+  column-gap: 5rem;
+
+}
+.name{
+  font-size: 2em;
+  font-weight: bold;
+}
+.grid-element button{
+  background-color: transparent;
+  border: 2px solid rgb(15, 158, 158);
+  color: white;
+  font-size: 1.2em;
+  transition: all .3s ease-out;
+}
+.grid-element button:hover{
+  background-color: rgb(15, 158, 158);
+  cursor: pointer;
+}
+.grid-element div{
+  text-align: center;
+}
+.btn{
+  background-color: transparent;
+  color:white;
+  border: 2px solid rgb(15, 158, 158);
+  border-radius: 15px;
+  font-size: 1.2em;
+  transition: all .3s ease-out;
+}
+.btn:hover{
+  background-color: rgb(15, 158, 158);
+  cursor: pointer;
+}
+.signOut{
+  text-align: right;
+  margin: .5em 1.5em;
+}
+.blue-border{
+  padding: 1rem;
+  border: 3px dashed rgb(15, 158, 158); 
+}
+.add-item{
+  width: fit-content;
+  text-align: center;
+  
+}
+.add-item div:first-child{
+  font-size: 1.8em;
+}
+.add-item form input{
+  text-align: center;
+}
+.add-item-wrapper{
+  display: flex;
+  justify-content: center;
+}
+.submit-wrapper{
+  text-align: right;
+}
 @media screen and (max-width: 600px){
   .login-wrapper{
     margin-top: 20%;
@@ -111,5 +175,8 @@ body{
     font-size: 1.2em;
     padding: 5px 5px;
     min-height: 60px;
+  }
+  .grid-wrapper{
+    grid-template-columns: 1fr;
   }
 }
