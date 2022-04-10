@@ -190,5 +190,6 @@ body{
   }
   .grid-wrapper{
     grid-template-columns: 1fr;
+    margin: 1rem;
   }
 }
