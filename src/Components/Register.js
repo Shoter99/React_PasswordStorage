@@ -1,24 +1,34 @@
 import React, { useState } from 'react'
-
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
+import {useNavigate} from 'react-router-dom'
 const Register = () => {
-  const [login, setLogin] = useState("")
   const [password, setPassword] = useState("")
   const [repassword, setRepassword] = useState("")
   const [email, setEmail] = useState("")
-
+  const auth = getAuth()
+  let navigate = useNavigate()
   const handleInputChange = (event, setter) =>{
     setter(event.target.value)
+
   }
-  const handleSubmit = (event, setter) =>{
+  const handleSubmit = (event) =>{
     event.preventDefault()
-    console.log(login, email, password)
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredentials) =>{
+        const user=userCredentials.user
+      })
+      .catch((error) =>{
+        const errorCode = error.code
+        const errorMessage = error.message
+        console.log(errorCode, errorMessage)
+      })
+    
+      navigate('/login')
+    
   }
   return (
     <div className='login-wrapper'>
             <form onSubmit={handleSubmit}>
-                <label htmlFor="login">Login:</label>
-                <input required type="text" id='login' name='login' value={login} onChange={(event) =>  handleInputChange(event, setLogin)} />
-                <br></br>
                 <label htmlFor="email">Email:</label>
                 <input required type="email" id='email' name='email' value={email} onChange={(event) =>  handleInputChange(event, setEmail)} />
                 <br></br>
