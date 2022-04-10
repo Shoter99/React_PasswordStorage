@@ -144,6 +144,9 @@ body{
 }
 
 @media screen and (max-width: 600px){
+  .name{
+    font-size: 1.2em;
+  }
   .login-wrapper{
     margin-top: 20%;
     height: 40vh;

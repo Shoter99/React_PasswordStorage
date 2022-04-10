@@ -9,6 +9,7 @@ const Home = () => {
   const salt = '3521853281'
   const [uid, setUid] = useState("")
   const [name, setName] = useState("")
+  const [login, setLogin] = useState("")
   const [pass, setPass] = useState("")
   const [data, setData]= useState([])
   const auth = getAuth()
@@ -39,11 +40,13 @@ const Home = () => {
     event.preventDefault()
     const newItem = {
       name: name,
+      login: login,
       password: encrypt(pass)
     }
     await addDoc(collection(db, "users", uid, 'passwords'), newItem)
     setName("")
     setPass("")
+    setLogin("")
   }
   const deleteItem = async(id) => {
     var conf = window.confirm("Are you sure you want to delete this item?")
@@ -56,10 +59,12 @@ const Home = () => {
   }
   const editItem = async(data) => {
     var editName = window.prompt("Enter new name", data.name)
+    var editLogin = window.prompt("Enter new name", data.login)
+
     var editPass = window.prompt("Enter new password", decrypt(data.password))
 
-    if(editName && editPass){
-      const newData = {name: editName, password: encrypt(editPass)}
+    if(editName && editLogin && editPass){
+      const newData = {name: editName, login: editLogin, password: encrypt(editPass)}
       await setDoc(doc(db, "users", uid, 'passwords', data.id), newData)
     }
     else{
@@ -87,6 +92,8 @@ const Home = () => {
             <div>Add Item</div>
             <form onSubmit={(event) => addNewItem(event)}>
               <input required className='btn' id="add-item-name" type="text" placeholder='Name' value={name} onChange={(event) => handleInputChange(event, setName)}/>
+              <br /><br />
+              <input required className='btn' id="add-item-login" type="text" placeholder='Login' value={login} onChange={(event) => handleInputChange(event, setLogin)}/>
               <br /><br />
               <input required className='btn' type="password" id='add-item-pass' placeholder='Password' value={pass} onChange={(event) => handleInputChange(event, setPass) }/>
               <br /><br />

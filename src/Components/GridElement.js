@@ -18,7 +18,7 @@ const GridElement = ({data, deleteItem, editItem, decrypt}) => {
       <div className="delete">
         <button onClick={() => deleteItem(data.id)}>X</button></div>
       </div>
-      <div className="name">{data.name}</div>
+      <div className="name">{(data.name).slice(0,23)}</div>
         <br />
         <div className="copypass">
             <button onClick={copyToClipboard}>{copied ? 'Copy Password' : 'Copied'}</button>
@@ -27,7 +27,9 @@ const GridElement = ({data, deleteItem, editItem, decrypt}) => {
         <div className="show-details">
             <button onClick={togglePassword}>Show Details</button>
         </div>
+        <div className="data-password" style={{display: passwordVisible ? 'block' : 'none'}}>{data.login}</div>
         <div className="data-password" style={{display: passwordVisible ? 'block' : 'none'}}>{decrypt(data.password)}</div>
+   
 
     </div>
   )
