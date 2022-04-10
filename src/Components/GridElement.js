@@ -18,7 +18,7 @@ const GridElement = ({data, deleteItem, editItem, decrypt}) => {
       <div className="delete">
         <button onClick={() => deleteItem(data.id)}>X</button></div>
       </div>
-      <div className="name">{(data.name).slice(0,23)}</div>
+      <div className="name">{(data.name).slice(0,17)}</div>
         <br />
         <div className="copypass">
             <button onClick={copyToClipboard}>{copied ? 'Copy Password' : 'Copied'}</button>
