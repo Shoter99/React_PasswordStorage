@@ -130,10 +130,19 @@ body{
 .add-item-wrapper{
   display: flex;
   justify-content: center;
+  position: relative;
 }
 .submit-wrapper{
   text-align: right;
 }
+.options-wrapper{
+  width: 100%;
+  /* background-color:white; */
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+
 @media screen and (max-width: 600px){
   .login-wrapper{
     margin-top: 20%;
