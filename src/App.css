@@ -42,10 +42,12 @@ body{
   border: none;
   border-bottom: 5px solid rgb(39, 39, 49);
   color: white;
+  transition: all 0.5s ease-out;
 }
 .login-wrapper form input:hover{
-  color: rgb(39, 39, 49);
+  /* color: rgb(39, 39, 49); */
   border-bottom: 5px solid white;
+  cursor: pointer;
 }
 .login-wrapper form input:focus-within{
   color: rgb(39, 39, 49);
@@ -54,10 +56,60 @@ body{
 }
 .login-wrapper form input[type="submit"]{
   color: white;
-  cursor: pointer;
   margin-left: 25rem;
 }
-.login-wrapper form input[type="submit"]:hover{
+.login-wrapper form input[type="submit"]:hover:enabled{
   color: white;
   cursor: pointer;
+  border-color: white;
+}
+.login-wrapper form input[type="submit"]:disabled{
+  color: gray;
+  border: none;
+  cursor: default;
+  
+  
+}
+@media screen and (max-width: 600px){
+  .login-wrapper{
+    margin-top: 20%;
+    height: 40vh;
+  }
+  .login-wrapper form{
+    border:2px dotted rgb(15, 158, 158);
+    padding: 1.2rem;
+    font-size: 1.2em;
+  }
+  .login-wrapper form input{
+    font-size: 1em;
+    margin: .8rem;
+    background-color: transparent;
+    border: none;
+    border-bottom: 5px solid rgb(39, 39, 49);
+    color: white;
+    transition: all 0.5s ease-out;
+  }
+  .login-wrapper form input:hover{
+    color: rgb(39, 39, 49);
+    border-bottom: 5px solid white;
+  }
+  .login-wrapper form input:focus-within{
+    color: rgb(39, 39, 49);
+    border-bottom: 5px solid white;
+    color: white;
+  }
+  .login-wrapper form input[type="submit"]{
+    color: white;
+    cursor: pointer;
+    margin-left: 9rem;
+  }
+  .login-wrapper form input[type="submit"]:hover{
+    color: white;
+    cursor: pointer;
+  }
+  .navbar{
+    font-size: 1.2em;
+    padding: 5px 5px;
+    min-height: 60px;
+  }
 }
