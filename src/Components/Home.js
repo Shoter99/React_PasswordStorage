@@ -52,6 +52,7 @@ const Home = () => {
       return true}
     var new_pin = window.prompt('Enter PIN: ')
     if (new_pin == pin && new_pin != "") return true
+
     return false
   }
   onAuthStateChanged(auth, (user) =>{
