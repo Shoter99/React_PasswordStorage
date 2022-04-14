@@ -28,14 +28,16 @@ const Home = () => {
   const handle_pin = async() =>{
     const docRef = doc(db, 'users', uid)
     const docSnap = await getDoc(docRef)
-    if (docSnap.data().pin) setPin(decrypt(docSnap.data().pin))
-    else set_new_pin()
-    console.log(pin)
+    if (docSnap.data().pin){
+       setPin(decrypt(docSnap.data().pin))
+       return true
+    }
+    set_new_pin()
+    return false
   }
   const set_new_pin = async() =>{
     const docRef = doc(db, 'users', uid)
     var new_pin = window.prompt('Set new PIN: ')
-    console.log(pin)
     if (!new_pin) {
     set_new_pin()
     return
@@ -49,7 +51,7 @@ const Home = () => {
   const check_pin = () => {
     if (pin == '') { 
       handle_pin() 
-      return true}
+      check_pin()}
     var new_pin = window.prompt('Enter PIN: ')
     if (new_pin == pin && new_pin != "") return true
 
