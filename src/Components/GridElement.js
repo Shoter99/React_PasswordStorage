@@ -1,15 +1,18 @@
 import React, { useState } from 'react'
 
-const GridElement = ({data, deleteItem, editItem, decrypt}) => {
+const GridElement = ({data, deleteItem, editItem, decrypt, check_pin}) => {
   const [passwordVisible, setPasswordVisible] = useState(false)
   const [copied, setCopied] = useState(true)
-  const togglePassword = () => setPasswordVisible(!passwordVisible)
+  const togglePassword = () => {
+    if(check_pin()) setPasswordVisible(!passwordVisible)
+  }
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(decrypt(data.password))
     setCopied(false)
     setTimeout(() => setCopied(true), 2000)
   }
+
   return (
     <div className='grid-element blue-border'>
       <div className='options-wrapper'>
