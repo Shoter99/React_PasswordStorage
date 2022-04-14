@@ -2,9 +2,22 @@ import React, { useState } from 'react'
 
 const GridElement = ({data, deleteItem, editItem, decrypt, check_pin}) => {
   const [passwordVisible, setPasswordVisible] = useState(false)
+  const [showErrorMessage, setErrorMessage] = useState(false)
   const [copied, setCopied] = useState(true)
   const togglePassword = () => {
-    if(check_pin()) setPasswordVisible(!passwordVisible)
+    if (passwordVisible) { 
+      setPasswordVisible(false)
+      return
+    }
+    if(check_pin()) {
+      setPasswordVisible(!passwordVisible)
+    }
+    else {
+      setErrorMessage(true)
+      setTimeout(() => {
+        setErrorMessage(false)
+      }, 2000)
+    }
   }
 
   const copyToClipboard = () => {
@@ -28,12 +41,11 @@ const GridElement = ({data, deleteItem, editItem, decrypt, check_pin}) => {
         </div>
         <br />
         <div className="show-details">
-            <button onClick={togglePassword}>Show Details</button>
+            <button onClick={togglePassword}>{!passwordVisible ? 'Show Details' : 'Hide Details'}</button>
         </div>
         <div className="data-password" style={{display: passwordVisible ? 'block' : 'none'}}>{data.login}</div>
         <div className="data-password" style={{display: passwordVisible ? 'block' : 'none'}}>{decrypt(data.password)}</div>
-   
-
+        {showErrorMessage && <div className="text-red-600">Wrong PIN</div>}
     </div>
   )
 }

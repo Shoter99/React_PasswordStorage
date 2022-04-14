@@ -30,19 +30,28 @@ const Home = () => {
     const docSnap = await getDoc(docRef)
     if (docSnap.data().pin) setPin(decrypt(docSnap.data().pin))
     else set_new_pin()
+    console.log(pin)
   }
   const set_new_pin = async() =>{
     const docRef = doc(db, 'users', uid)
-    var new_pin = window.prompt('Set new pin: ')
+    var new_pin = window.prompt('Set new PIN: ')
+    console.log(pin)
+    if (!new_pin) {
+    set_new_pin()
+    return
+    }
+    
     var data = {pin: encrypt(new_pin)}
     await setDoc(docRef, data)
     handle_pin()
 
   }
   const check_pin = () => {
-    var new_pin = window.prompt('Set new pin: ')
-    if (new_pin == pin) return true
-    alert('Wrong pin')
+    if (pin == '') { 
+      handle_pin() 
+      return true}
+    var new_pin = window.prompt('Enter PIN: ')
+    if (new_pin == pin && new_pin != "") return true
     return false
   }
   onAuthStateChanged(auth, (user) =>{
@@ -123,7 +132,6 @@ const Home = () => {
               </div>
             </form>
           </div>
-          <button onClick={ handle_pin }>Get pin</button>
         </div>
         <div className="grid-wrapper">
           {data.map((item, index) => <GridElement key={index} data={item} deleteItem={deleteItem} check_pin={check_pin} editItem={editItem} decrypt={decrypt}/>)}
