@@ -38,20 +38,16 @@ const Home = () => {
   const set_new_pin = async() =>{
     const docRef = doc(db, 'users', uid)
     var new_pin = window.prompt('Set new PIN: ')
-    if (!new_pin) {
-    set_new_pin()
-    return
-    }
-    
     var data = {pin: encrypt(new_pin)}
     await setDoc(docRef, data)
-    handle_pin()
+    setPin(new_pin)
 
   }
   const check_pin = () => {
     if (pin == '') { 
-      handle_pin() 
-      check_pin()}
+      handle_pin()
+      return false
+    }
     var new_pin = window.prompt('Enter PIN: ')
     if (new_pin == pin && new_pin != "") return true
 
