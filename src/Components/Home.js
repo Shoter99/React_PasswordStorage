@@ -108,6 +108,7 @@ const Home = () => {
 
       }
     );
+    handle_pin()
   }
   }, [uid])
   return (
