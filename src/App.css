@@ -1,6 +1,17 @@
+:root{
+  --color-bg: #16161a;
+  --color-primary: #272731;
+  --color-secondary: #0f9e9e;
+  --color-text: #fff;
+  
+  --color-bg: #ffe4fc;
+  --color-primary: #fd9ef0;
+  --color-secondary: #ff85c8;
+  --color-text: #70284a;
+}
 body{
-  background-color: rgb(22, 22, 26);
-  color: white;
+  background-color: var(--color-bg);
+  color: var(--color-text);
 }
 
 .navbar{
@@ -10,12 +21,12 @@ body{
   align-items: center;
   padding: 10px 20px;
   font-size: 2em;
-  background-color: rgb(15, 158, 158);
+  background-color: var(--color-secondary);
 }
 .navBtn{
   margin: 0 15px;
   background-color: transparent;
-  color: white;
+  color: var(--color-text);
   font-size: .8em;
 
   border: none
@@ -31,7 +42,7 @@ body{
   justify-content: center;
 }
 .login-wrapper form{
-  border:2px dotted rgb(15, 158, 158);
+  border:2px dotted var(--color-secondary);
   padding: 2rem;
   font-size: 2em;
 }
@@ -40,8 +51,8 @@ body{
   margin: .8rem;
   background-color: transparent;
   border: none;
-  border-bottom: 5px solid rgb(39, 39, 49);
-  color: white;
+  border-bottom: 5px solid var(--color-primary);
+  color: var(--color-text);
   transition: all 0.5s ease-out;
 }
 .login-wrapper form input:hover{
@@ -50,18 +61,18 @@ body{
   cursor: pointer;
 }
 .login-wrapper form input:focus-within{
-  color: rgb(39, 39, 49);
-  border-bottom: 5px solid white;
-  color: white;
+  color: var(--color-primary);
+  border-bottom: 5px solid var(--color-text);
+  color: var(--color-text);
 }
 .login-wrapper form input[type="submit"]{
-  color: white;
+  color: var(--color-text);
   margin-left: 25rem;
 }
 .login-wrapper form input[type="submit"]:hover:enabled{
-  color: white;
+  color: var(--color-text);
   cursor: pointer;
-  border-color: white;
+  border-color: var(--color-text);
 }
 .login-wrapper form input[type="submit"]:disabled{
   color: gray;
@@ -84,15 +95,15 @@ body{
 }
 .grid-element button{
   background-color: transparent;
-  border: 2px solid rgb(15, 158, 158);
-  color: white;
+  border: 2px solid var(--color-secondary);
+  color: var(--color-text);
   font-size: 1.2em;
   transition: all .3s ease-out;
   border-radius: 15px;
   padding: .3rem;
 }
 .grid-element button:hover{
-  background-color: rgb(15, 158, 158);
+  background-color: var(--color-secondary);
   cursor: pointer;
 }
 .grid-element div{
@@ -100,16 +111,19 @@ body{
 }
 .btn{
   background-color: transparent;
-  color:white;
-  border: 2px solid #0f9e9e;
+  color:var(--color-text);
+  border: 2px solid var(--color-secondary);
   border-radius: 15px;
   font-size: 1.2em;
   transition: all .3s ease-out;
   padding: .3rem 1.2rem;
   
 }
+.generate{
+  color: var(--color-secondary);
+}
 .btn:hover{
-  background-color: rgb(15, 158, 158);
+  background-color: var(--color-secondary);
   cursor: pointer;
 }
 .signOut{
@@ -118,7 +132,7 @@ body{
 }
 .blue-border{
   padding: 1rem;
-  border: 3px dashed rgb(15, 158, 158); 
+  border: 3px dashed var(--color-secondary); 
 }
 .add-item{
   width: fit-content;
@@ -168,7 +182,7 @@ body{
     height: 40vh;
   }
   .login-wrapper form{
-    border:2px dotted rgb(15, 158, 158);
+    border:2px dotted var(--color-secondary);
     padding: 1.2rem;
     font-size: 1.2em;
   }
@@ -177,26 +191,26 @@ body{
     margin: .8rem;
     background-color: transparent;
     border: none;
-    border-bottom: 5px solid rgb(39, 39, 49);
-    color: white;
+    border-bottom: 5px solid var(--color-primary);
+    color: var(--color-text);
     transition: all 0.5s ease-out;
   }
   .login-wrapper form input:hover{
-    color: rgb(39, 39, 49);
-    border-bottom: 5px solid white;
+    color: var(--color-primary);
+    border-bottom: 5px solid var(--color-text);
   }
   .login-wrapper form input:focus-within{
-    color: rgb(39, 39, 49);
-    border-bottom: 5px solid white;
-    color: white;
+    color: var(--color-primary);
+    border-bottom: 5px solid var(--color-text);
+    color: var(--color-text);
   }
   .login-wrapper form input[type="submit"]{
-    color: white;
+    color: var(--color-text);
     cursor: pointer;
     margin-left: 9rem;
   }
   .login-wrapper form input[type="submit"]:hover{
-    color: white;
+    color: var(--color-text);
     cursor: pointer;
   }
   .navbar{

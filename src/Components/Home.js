@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import GridElement from './GridElement'
 import { onSnapshot, collection, doc, setDoc, addDoc, deleteDoc, getDoc } from 'firebase/firestore'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faEyeSlash, faGear } from '@fortawesome/free-solid-svg-icons'
 const Home = () => {
   var CryptoJS = require("crypto-js")
   const salt = '3521853281'
@@ -16,8 +16,34 @@ const Home = () => {
   const [data, setData]= useState([])
   const [pin, setPin] = useState('')
   const [passwordVisible, setPasswordVisible] = useState(false)
+  const [pink, setPink] = useState(false)
   const auth = getAuth()
+  
   let navigate = useNavigate()
+
+  const handleColorChange = () => {
+    setPink(!pink)
+    console.log('pink to save', pink)
+    localStorage.setItem('pink', JSON.stringify(!pink))
+
+  }
+
+  const changeColors = () => {
+    var r = document.querySelector(':root')
+    if(pink){
+      r.style.setProperty('--color-bg', '#ffe4fc')
+      r.style.setProperty('--color-primary', '#fd9ef0')
+      r.style.setProperty('--color-secondary', '#ff85c8')
+      r.style.setProperty('--color-text', '#70284a')
+    }
+    else{
+      r.style.setProperty('--color-bg', '#16161a')
+      r.style.setProperty('--color-primary', '#272731')
+      r.style.setProperty('--color-secondary', '#0f9e9e')
+      r.style.setProperty('--color-text', '#ffffff')
+    }
+  }
+
 
   const togglePassword = () => {
     setPasswordVisible(!passwordVisible)
@@ -136,6 +162,23 @@ const Home = () => {
       return
     }
   }
+  //check if color is in memory
+  useEffect(() => {
+    try{
+      const local_pink = localStorage.getItem('pink')
+      console.log(local_pink)
+      if(local_pink == 'true'){
+        setPink(true)
+      }
+      else{
+        setPink(false)
+      }
+    }catch(e){console.log(e)}
+  }, [])
+  //changing colors
+  useEffect(() => {
+    changeColors()
+  }, [pink])
   //fetching data from database if user is logged in
   useEffect(() =>{
     if( uid !== ""){
@@ -153,6 +196,9 @@ const Home = () => {
   return (
     <div>
         <div className='signOut'>
+          <button className='px-5' onClick={handleColorChange}>
+            <FontAwesomeIcon icon={faGear} />
+          </button>
           <button className='btn' onClick={signOut}>Log out</button>
         </div>
         <div className='add-item-wrapper'>
@@ -170,7 +216,7 @@ const Home = () => {
                 <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} />}</button>
 
               </div>
-              <div className='text-right px-3 my-2 text-teal-300'>
+              <div  className='text-right px-3 my-2 generate'>
                 <button type='button' onClick={generatePassword}>Generate password</button>
               </div>
               <div className='submit-wrapper'>
@@ -178,6 +224,7 @@ const Home = () => {
               </div>
             </form>
           </div>
+          
         </div>
         {/* creating grid of items fetched from db */}
         <div className="grid-wrapper">
