@@ -31,12 +31,14 @@ const Login = () => {
       }
     }, )}, [])
   return (
-    <div className='login-wrapper'>
+    <div className='login-wrapper text-xs md:text-base'>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="email">Email:</label>
+                <br className='inline md:hidden'/>
                 <input type="text" name='email' value={email} onChange={(event) =>  handleInputChange(event, setLogin)} />
-                <br></br>
+                <br></br> <br />
                 <label htmlFor="password">Password:</label>
+                <br className='inline md:hidden'/>
                 <input type="password" name="password" id="password" value={password} onChange={(event) => handleInputChange(event, setPassword)} />
                 <br></br>
                 <input type="submit" value="Log in" />
