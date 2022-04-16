@@ -105,7 +105,8 @@ body{
   border-radius: 15px;
   font-size: 1.2em;
   transition: all .3s ease-out;
-  padding: .3rem;
+  padding: .3rem 1.2rem;
+  
 }
 .btn:hover{
   background-color: rgb(15, 158, 158);
@@ -128,7 +129,7 @@ body{
   font-size: 1.8em;
 }
 .add-item form input{
-  text-align: center;
+  text-align: left;
 }
 .add-item-wrapper{
   display: flex;
@@ -209,3 +210,6 @@ body{
   }
 
 }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
