@@ -8,8 +8,8 @@
       { "source":"/service-worker.js",
         "headers": [{
           "key": "Cache-Control",
-          "value": "public, max-age=0"
-        }]
+          "value": "no-cache"
+          }]
       }
     ],
     "public": "build",
