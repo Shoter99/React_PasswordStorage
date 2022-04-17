@@ -155,19 +155,9 @@ const Home = () => {
   }
 
 
-  const editItem = async(data) => {
-    var editName = window.prompt("Enter new name", data.name)
-    var editLogin = window.prompt("Enter new name", data.login)
-
-    var editPass = window.prompt("Enter new password", decrypt(data.password))
-
-    if(editName && editLogin && editPass){
+  const editItem = async(editName,editLogin,editPass, id) => {
       const newData = {name: editName, login: editLogin, password: encrypt(editPass)}
-      await setDoc(doc(db, "users", uid, 'passwords', data.id), newData)
-    }
-    else{
-      return
-    }
+      await setDoc(doc(db, "users", uid, 'passwords', id), newData)
   }
 
 

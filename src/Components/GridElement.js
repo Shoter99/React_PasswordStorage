@@ -1,10 +1,19 @@
 import React, { useState } from 'react'
-import {Tooltip} from '@mantine/core'
+import {Tooltip, Modal} from '@mantine/core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 const GridElement = ({data, deleteItem, editItem, decrypt, check_pin}) => {
   const [passwordVisible, setPasswordVisible] = useState(false)
   const [showErrorMessage, setErrorMessage] = useState(false)
   const [copied, setCopied] = useState(true)
-  const togglePassword = () => {
+  const [showEdit, setShowEdit] = useState(false)
+  const [editName, setEditName] = useState(data.name)
+  const [editLogin, setEditLogin] = useState(data.login)
+  const [editPass, setEditPass] = useState(decrypt(data.password))
+  const [editPassVisible, setEditPassVisible] = useState(false)
+  const [showEditErrorMessage, setEditErrorMessage] = useState(false)
+
+  const togglePassword = (passwordVisible, setPasswordVisible, setErrorMessage) => {
     if (passwordVisible) { 
       setPasswordVisible(false)
       return
@@ -19,7 +28,6 @@ const GridElement = ({data, deleteItem, editItem, decrypt, check_pin}) => {
       }, 2000)
     }
   }
-
   const copyToClipboard = () => {
     navigator.clipboard.writeText(decrypt(data.password))
     setCopied(false)
@@ -28,9 +36,53 @@ const GridElement = ({data, deleteItem, editItem, decrypt, check_pin}) => {
 
   return (
     <div className='grid-element blue-border'>
+      <Modal
+        opened={showEdit}
+        title='Edit:'
+        onClose={() => setShowEdit(false)}
+        classNames={{modal: 'modal-overlay'}}
+      >
+        <form  onSubmit={(e) => {
+            e.preventDefault()
+            editItem(editName,editLogin, editPass, data.id)
+            setShowEdit(false)
+          }
+          }className='px-5 text-center'>
+          <label className='pr-3'>Name:</label>
+          <br className='inline md:hidden'/>
+          <input required className='btn' type="text" value={editName} onChange={(event) => setEditName(event.target.value)}/>
+          <br /><br />
+          <label className='pr-3'>Login:</label>
+          <br  className='inline md:hidden'/>
+          <input required className='btn' type="text" value={editLogin} onChange={(event) => setEditLogin(event.target.value)}/>
+          <br /><br />
+          <div className='relative'>      
+            <label className='pr-3'>Password:</label>
+            <br className='inline md:hidden'/>
+            <input required className='btn' type={editPassVisible ? 'text' : 'password'} value={editPass} onChange={(event) => setEditPass(event.target.value)}/>
+            <Tooltip
+                  classNames={{root:'absolute right-4 top-2.5 cursor-pointer', body: 'tooltip', arrow:'tooltip'}}
+                  label= {editPassVisible ? "Hide" : "Show"}
+                  withArrow
+                  position="bottom"
+                  placement='center'
+                  >
+                <button type="button" className='' onClick={() => {
+                  togglePassword(editPassVisible, setEditPassVisible, setEditErrorMessage)
+                }} id="togglePassword">{editPassVisible ? 
+                  <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} />}</button>
+                  </Tooltip>
+          </div>
+          {showEditErrorMessage && <div className="text-red-600">Wrong PIN</div>}
+          <br /><br />
+          <div className='text-center'>
+            <input type="submit" class='btn' value="Save" />
+          </div>
+        </form>
+      </Modal>
       <div className='options-wrapper'>
       <div className="edit">
-        <button onClick={() => editItem(data)}>Edit</button></div>
+        <button onClick={() => setShowEdit(true)}>Edit</button></div>
       
       <div className="delete">
         <Tooltip
@@ -51,7 +103,7 @@ const GridElement = ({data, deleteItem, editItem, decrypt, check_pin}) => {
         </div>
         <br />
         <div className="show-details">
-            <button onClick={togglePassword}>{!passwordVisible ? 'Show Details' : 'Hide Details'}</button>
+            <button onClick={() => togglePassword(passwordVisible, setPasswordVisible, setErrorMessage )}>{!passwordVisible ? 'Show Details' : 'Hide Details'}</button>
         </div>
         <div className="data-password" style={{display: passwordVisible ? 'block' : 'none'}}>{data.login}</div>
         <div className="data-password" style={{display: passwordVisible ? 'block' : 'none'}}>{decrypt(data.password)}</div>
