@@ -173,6 +173,15 @@ body{
   color: red;
   font-size: 1.2em;
 }
+.modal-overlay{
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+.tooltip{
+  background-color: var(--color-secondary);
+  color: var(--color-text);
+  font-size: .8em;
+}
 @media screen and (max-width: 600px){
   .name{
     font-size: 1.2em;
