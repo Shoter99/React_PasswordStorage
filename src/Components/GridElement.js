@@ -49,19 +49,19 @@ const GridElement = ({data, deleteItem, editItem, decrypt, check_pin}) => {
           }
           }className='px-5 text-center'>
           <label className='pr-3'>Name:</label>
-          <br className='inline md:hidden'/>
+          <br />
           <input required className='btn' type="text" value={editName} onChange={(event) => setEditName(event.target.value)}/>
           <br /><br />
           <label className='pr-3'>Login:</label>
-          <br  className='inline md:hidden'/>
-          <input required className='btn' type="text" value={editLogin} onChange={(event) => setEditLogin(event.target.value)}/>
+          <br />
+          <input required className='btn'type={editPassVisible ? 'text' : 'password'} value={editLogin} onChange={(event) => setEditLogin(event.target.value)}/>
           <br /><br />
-          <div className='relative'>      
             <label className='pr-3'>Password:</label>
-            <br className='inline md:hidden'/>
+          <br />
+            <div className='relative'>      
             <input required className='btn' type={editPassVisible ? 'text' : 'password'} value={editPass} onChange={(event) => setEditPass(event.target.value)}/>
             <Tooltip
-                  classNames={{root:'absolute right-4 top-2.5 cursor-pointer', body: 'tooltip', arrow:'tooltip'}}
+                  classNames={{root:'absolute bottom-14 cursor-pointer', body: 'tooltip', arrow:'tooltip'}}
                   label= {editPassVisible ? "Hide" : "Show"}
                   withArrow
                   position="bottom"
@@ -76,7 +76,7 @@ const GridElement = ({data, deleteItem, editItem, decrypt, check_pin}) => {
           {showEditErrorMessage && <div className="text-red-600">Wrong PIN</div>}
           <br /><br />
           <div className='text-center'>
-            <input type="submit" class='btn' value="Save" />
+            <input type="submit" className='btn' value="Save" />
           </div>
         </form>
       </Modal>
