@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-
+import {Tooltip} from '@mantine/core'
 const GridElement = ({data, deleteItem, editItem, decrypt, check_pin}) => {
   const [passwordVisible, setPasswordVisible] = useState(false)
   const [showErrorMessage, setErrorMessage] = useState(false)
@@ -31,8 +31,18 @@ const GridElement = ({data, deleteItem, editItem, decrypt, check_pin}) => {
       <div className='options-wrapper'>
       <div className="edit">
         <button onClick={() => editItem(data)}>Edit</button></div>
+      
       <div className="delete">
-        <button onClick={() => deleteItem(data.id)}>X</button></div>
+        <Tooltip
+            classNames={{body: 'tooltip', arrow:'tooltip'}}
+            label="Delete Item"
+            withArrow
+            position="bottom"
+            placement='center'
+          >
+        <button onClick={() => deleteItem(data.id)}>X</button>
+        </Tooltip>
+      </div>
       </div>
       <div className="name">{(data.name).slice(0,17)}</div>
         <br />

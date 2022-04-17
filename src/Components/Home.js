@@ -6,6 +6,8 @@ import GridElement from './GridElement'
 import { onSnapshot, collection, doc, setDoc, addDoc, deleteDoc, getDoc } from 'firebase/firestore'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash, faGear } from '@fortawesome/free-solid-svg-icons'
+import { Modal, Tooltip } from '@mantine/core'
+
 const Home = () => {
   var CryptoJS = require("crypto-js")
   const salt = '3521853281'
@@ -17,6 +19,11 @@ const Home = () => {
   const [pin, setPin] = useState('')
   const [passwordVisible, setPasswordVisible] = useState(false)
   const [pink, setPink] = useState(false)
+  const [openDelete, setOpenDelete] = useState(false)
+  const [openEdit, setOpenEdit] = useState(false)
+  const [editDataName, setEditDataName] = useState('')
+  const [editDataLogin, setEditDataLogin] = useState('')
+  const [editDataPassword, setEditDataPassword] = useState('')
   const auth = getAuth()
   
   let navigate = useNavigate()
@@ -146,8 +153,8 @@ const Home = () => {
       return
     }
   }
-  
-  
+
+
   const editItem = async(data) => {
     var editName = window.prompt("Enter new name", data.name)
     var editLogin = window.prompt("Enter new name", data.login)
@@ -162,6 +169,8 @@ const Home = () => {
       return
     }
   }
+
+
   //check if color is in memory
   useEffect(() => {
     try{
@@ -195,10 +204,27 @@ const Home = () => {
   
   return (
     <div>
+        <Modal
+          opened={openDelete}
+          onClose={() => setOpenDelete(false)}
+          title="Are you sure you want to delete this item?"
+          classNames={{modal: 'modal-overlay'}}
+        >
+          <button className="btn" onClick={deleteItem}>Delete</button>
+        </Modal>
+
         <div className='signOut'>
+          <Tooltip
+          classNames={{body: 'tooltip', arrow:'tooltip'}}
+          label="Change colors"
+          withArrow
+          position="bottom"
+          placement='center'
+          >
           <button className='px-5' onClick={handleColorChange}>
             <FontAwesomeIcon icon={faGear} />
           </button>
+          </Tooltip>
           <button className='btn' onClick={signOut}>Log out</button>
         </div>
         <div className='add-item-wrapper'>
@@ -212,8 +238,16 @@ const Home = () => {
               <br /><br />
               <div className='relative'>
               <input required className='btn' type={passwordVisible ? 'text' :"password"} id='add-item-pass' placeholder='Password' value={pass} onChange={(event) => handleInputChange(event, setPass) }/> 
-              <button type="button" className='absolute right-3 top-2.5 cursor-pointer' onClick={togglePassword} id="togglePassword">{passwordVisible ? 
+              <Tooltip
+                classNames={{root:'absolute right-3 top-2.5 cursor-pointer', body: 'tooltip', arrow:'tooltip'}}
+                label= {passwordVisible ? "Hide" : "Show"}
+                withArrow
+                position="bottom"
+                placement='center'
+              >
+              <button type="button" className='' onClick={togglePassword} id="togglePassword">{passwordVisible ? 
                 <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} />}</button>
+                </Tooltip>
 
               </div>
               <div  className='text-right px-3 my-2 generate'>
@@ -228,7 +262,7 @@ const Home = () => {
         </div>
         {/* creating grid of items fetched from db */}
         <div className="grid-wrapper">
-          {data.map((item, index) => <GridElement key={index} data={item} deleteItem={deleteItem} check_pin={check_pin} editItem={editItem} decrypt={decrypt}/>)}
+          {data.map((item, index) => <GridElement key={index} data={item} deleteItem={() => {setOpenDelete(true)}} check_pin={check_pin} editItem={editItem} decrypt={decrypt}/>)}
         </div>
     </div>
   )
