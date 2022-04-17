@@ -19,7 +19,6 @@ const Home = () => {
   const [pin, setPin] = useState('')
   const [passwordVisible, setPasswordVisible] = useState(false)
   const [pink, setPink] = useState(false)
-  const [openDelete, setOpenDelete] = useState(false)
   const [openEdit, setOpenEdit] = useState(false)
   const [editDataName, setEditDataName] = useState('')
   const [editDataLogin, setEditDataLogin] = useState('')
@@ -145,13 +144,7 @@ const Home = () => {
   
   
   const deleteItem = async(id) => {
-    var conf = window.confirm("Are you sure you want to delete this item?")
-    if(conf)
-    {
-      await deleteDoc(doc(db, "users", uid, 'passwords', id))
-    }else{
-      return
-    }
+    await deleteDoc(doc(db, "users", uid, 'passwords', id))
   }
 
 
@@ -194,14 +187,7 @@ const Home = () => {
   
   return (
     <div>
-        <Modal
-          opened={openDelete}
-          onClose={() => setOpenDelete(false)}
-          title="Are you sure you want to delete this item?"
-          classNames={{modal: 'modal-overlay'}}
-        >
-          <button className="btn" onClick={deleteItem}>Delete</button>
-        </Modal>
+
 
         <div className='signOut'>
           <Tooltip
@@ -252,7 +238,7 @@ const Home = () => {
         </div>
         {/* creating grid of items fetched from db */}
         <div className="grid-wrapper">
-          {data.map((item, index) => <GridElement key={index} data={item} deleteItem={() => {setOpenDelete(true)}} check_pin={check_pin} editItem={editItem} decrypt={decrypt}/>)}
+          {data.map((item, index) => <GridElement key={index} data={item} deleteItem={deleteItem} check_pin={check_pin} editItem={editItem} decrypt={decrypt}/>)}
         </div>
     </div>
   )

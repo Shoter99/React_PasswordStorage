@@ -12,6 +12,7 @@ const GridElement = ({data, deleteItem, editItem, decrypt, check_pin}) => {
   const [editPass, setEditPass] = useState(decrypt(data.password))
   const [editPassVisible, setEditPassVisible] = useState(false)
   const [showEditErrorMessage, setEditErrorMessage] = useState(false)
+  const [openDelete, setOpenDelete] = useState(false)
 
   const togglePassword = (passwordVisible, setPasswordVisible, setErrorMessage) => {
     if (passwordVisible) { 
@@ -36,6 +37,18 @@ const GridElement = ({data, deleteItem, editItem, decrypt, check_pin}) => {
 
   return (
     <div className='grid-element blue-border'>
+        <Modal
+          opened={openDelete}
+          onClose={() => setOpenDelete(false)}
+          title={`Are you sure you want to delete ${data.name}?`}
+          classNames={{modal: 'modal-overlay'}}
+        >
+          <button className="btn" onClick={() => {
+            setOpenDelete(false)
+            deleteItem(data.id)
+            }
+            }>Delete</button>
+        </Modal>
       <Modal
         opened={showEdit}
         title='Edit:'
@@ -67,7 +80,7 @@ const GridElement = ({data, deleteItem, editItem, decrypt, check_pin}) => {
                   position="bottom"
                   placement='center'
                   >
-                <button type="button" className='' onClick={() => {
+                <button type="button" onClick={() => {
                   togglePassword(editPassVisible, setEditPassVisible, setEditErrorMessage)
                 }} id="togglePassword">{editPassVisible ? 
                   <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} />}</button>
@@ -92,7 +105,7 @@ const GridElement = ({data, deleteItem, editItem, decrypt, check_pin}) => {
             position="bottom"
             placement='center'
           >
-        <button onClick={() => deleteItem(data.id)}>X</button>
+        <button onClick={() => {setOpenDelete(true)}}>X</button>
         </Tooltip>
       </div>
       </div>
