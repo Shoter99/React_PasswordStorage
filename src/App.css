@@ -1,20 +1,20 @@
-:root{
+:root {
   --color-bg: #16161a;
   --color-primary: #272731;
   --color-secondary: #0f9e9e;
   --color-text: #fff;
-  
+
   --color-bg: #ffe4fc;
   --color-primary: #fd9ef0;
   --color-secondary: #ff85c8;
   --color-text: #70284a;
 }
-body{
+body {
   background-color: var(--color-bg);
   color: var(--color-text);
 }
 
-.navbar{
+.navbar {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -23,15 +23,15 @@ body{
   font-size: 2em;
   background-color: var(--color-secondary);
 }
-.navBtn{
+.navBtn {
   margin: 0 15px;
   background-color: transparent;
   color: var(--color-text);
-  font-size: .8em;
+  font-size: 0.8em;
 
-  border: none
+  border: none;
 }
-.navBtn:hover{
+.navBtn:hover {
   cursor: pointer;
 }
 
@@ -41,197 +41,191 @@ body{
   align-items: center;
   justify-content: center;
 }
-.login-wrapper form{
-  border:2px dotted var(--color-secondary);
+.login-wrapper form {
+  border: 2px dotted var(--color-secondary);
   padding: 2rem;
   font-size: 2em;
 }
-.login-wrapper form input{
-  font-size: .8em;
-  margin: .8rem;
+.login-wrapper form input {
+  font-size: 0.8em;
+  margin: 0.8rem;
   background-color: transparent;
   border: none;
   border-bottom: 5px solid var(--color-primary);
   color: var(--color-text);
   transition: all 0.5s ease-out;
 }
-.login-wrapper form input:hover{
+.login-wrapper form input:hover {
   /* color: rgb(39, 39, 49); */
   border-bottom: 5px solid white;
   cursor: pointer;
 }
-.login-wrapper form input:focus-within{
+.login-wrapper form input:focus-within {
   color: var(--color-primary);
   border-bottom: 5px solid var(--color-text);
   color: var(--color-text);
 }
-.login-wrapper form input[type="submit"]{
+.login-wrapper form input[type="submit"] {
   color: var(--color-text);
   margin-left: 25rem;
 }
-.login-wrapper form input[type="submit"]:hover:enabled{
+.login-wrapper form input[type="submit"]:hover:enabled {
   color: var(--color-text);
   cursor: pointer;
   border-color: var(--color-text);
 }
-.login-wrapper form input[type="submit"]:disabled{
+.login-wrapper form input[type="submit"]:disabled {
   color: gray;
   border: none;
   cursor: default;
-  
-  
 }
-.grid-wrapper{
+.grid-wrapper {
   margin: 2rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
   row-gap: 2rem;
   column-gap: 5rem;
-
 }
-.name{
+.name {
   font-size: 2em;
   font-weight: bold;
 }
-.grid-element button{
+.grid-element button {
   background-color: transparent;
   border: 2px solid var(--color-secondary);
   color: var(--color-text);
   font-size: 1.2em;
-  transition: all .3s ease-out;
+  transition: all 0.3s ease-out;
   border-radius: 15px;
-  padding: .3rem;
+  padding: 0.3rem;
 }
-.grid-element button:hover{
+.grid-element button:hover {
   background-color: var(--color-secondary);
   cursor: pointer;
 }
-.grid-element div{
+.grid-element div {
   text-align: center;
 }
-.btn{
+.btn {
   background-color: transparent;
-  color:var(--color-text);
+  color: var(--color-text);
   border: 2px solid var(--color-secondary);
   border-radius: 15px;
   font-size: 1.2em;
-  transition: all .3s ease-out;
-  padding: .3rem 1.2rem;
-  
+  transition: all 0.3s ease-out;
+  padding: 0.3rem 1.2rem;
 }
-.generate{
+.generate {
   color: var(--color-secondary);
 }
-.btn:hover{
+.btn:hover {
   background-color: var(--color-secondary);
   cursor: pointer;
 }
-.signOut{
+.signOut {
   text-align: right;
-  margin: .5em 1.5em;
+  margin: 0.5em 1.5em;
 }
-.blue-border{
+.blue-border {
   padding: 1rem;
-  border: 3px dashed var(--color-secondary); 
+  border: 3px dashed var(--color-secondary);
 }
-.add-item{
+.add-item {
   width: fit-content;
   text-align: center;
-  
 }
-.add-item div:first-child{
+.add-item div:first-child {
   font-size: 1.8em;
 }
-.add-item form input{
+.add-item form input {
   text-align: left;
 }
-.add-item-wrapper{
+.add-item-wrapper {
   display: flex;
   justify-content: center;
   position: relative;
 }
-.submit-wrapper{
+.submit-wrapper {
   text-align: right;
 }
-.options-wrapper{
+.options-wrapper {
   width: 100%;
   /* background-color:white; */
   display: flex;
   justify-content: right;
   align-items: center;
 }
-.edit{
-  margin: 0 .2rem;
+.edit {
+  margin: 0 0.2rem;
 }
-.edit button{
+.edit button {
   width: 6ch;
 }
-.delete button{
+.delete button {
   width: 4ch;
 }
-.error_msg{
+.error_msg {
   color: red;
   font-size: 1.2em;
 }
-.modal-overlay{
+.modal-overlay {
   background-color: var(--color-bg);
   color: var(--color-text);
 }
-.tooltip{
+.tooltip {
   background-color: var(--color-secondary);
   color: var(--color-text);
-  font-size: .8em;
+  font-size: 0.8em;
 }
-@media screen and (max-width: 600px){
-  .name{
+@media screen and (max-width: 600px) {
+  .name {
     font-size: 1.2em;
   }
-  .login-wrapper{
+  .login-wrapper {
     margin-top: 20%;
     height: 40vh;
   }
-  .login-wrapper form{
-    border:2px dotted var(--color-secondary);
+  .login-wrapper form {
+    border: 2px dotted var(--color-secondary);
     padding: 1.2rem;
     font-size: 1.2em;
   }
-  .login-wrapper form input{
+  .login-wrapper form input {
     font-size: 1em;
-    margin: .8rem;
+    margin: 0.8rem;
     background-color: transparent;
     border: none;
     border-bottom: 5px solid var(--color-primary);
     color: var(--color-text);
     transition: all 0.5s ease-out;
   }
-  .login-wrapper form input:hover{
+  .login-wrapper form input:hover {
     color: var(--color-primary);
     border-bottom: 5px solid var(--color-text);
   }
-  .login-wrapper form input:focus-within{
+  .login-wrapper form input:focus-within {
     color: var(--color-primary);
     border-bottom: 5px solid var(--color-text);
     color: var(--color-text);
   }
-  .login-wrapper form input[type="submit"]{
+  .login-wrapper form input[type="submit"] {
     color: var(--color-text);
     cursor: pointer;
     margin-left: 9rem;
   }
-  .login-wrapper form input[type="submit"]:hover{
+  .login-wrapper form input[type="submit"]:hover {
     color: var(--color-text);
     cursor: pointer;
   }
-  .navbar{
+  .navbar {
     font-size: 1.2em;
     padding: 5px 5px;
     min-height: 60px;
   }
-  .grid-wrapper{
+  .grid-wrapper {
     grid-template-columns: 1fr;
     margin: 1rem;
   }
-
 }
 @tailwind base;
 @tailwind components;
