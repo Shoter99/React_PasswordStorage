@@ -8,8 +8,8 @@ const GridElement = ({ data, deleteItem, editItem, decrypt, check_pin }) => {
   const [copied, setCopied] = useState(true);
   const [showEdit, setShowEdit] = useState(false);
   const [editName, setEditName] = useState(data.name);
-  const [editLogin, setEditLogin] = useState(data.login);
-  const [editPass, setEditPass] = useState(decrypt(data.password));
+  const [editLogin, setEditLogin] = useState(decrypt(data.login) ? decrypt(data.login) : "");
+  const [editPass, setEditPass] = useState(decrypt(data.password) ? decrypt(data.password) : "");
   const [editPassVisible, setEditPassVisible] = useState(false);
   const [showEditErrorMessage, setEditErrorMessage] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
@@ -33,7 +33,7 @@ const GridElement = ({ data, deleteItem, editItem, decrypt, check_pin }) => {
     }
   };
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(decrypt(data.password));
+    navigator.clipboard.writeText(decrypt(data.password) ? decrypt(data.password) : "");
     setCopied(false);
     setTimeout(() => setCopied(true), 2000);
   };
@@ -149,6 +149,7 @@ const GridElement = ({ data, deleteItem, editItem, decrypt, check_pin }) => {
 
         <div className="delete">
           <Tooltip
+            className='z'
             classNames={{ body: "tooltip", arrow: "tooltip" }}
             label="Delete Item"
             withArrow
@@ -182,18 +183,18 @@ const GridElement = ({ data, deleteItem, editItem, decrypt, check_pin }) => {
           {!passwordVisible ? "Show Details" : "Hide Details"}
         </button>
       </div>
+      {passwordVisible ? <div >
       <div
         className="data-password"
-        style={{ display: passwordVisible ? "block" : "none" }}
-      >
-        {data.login}
+        >
+        {decrypt(data.login) ? decrypt(data.login) : "Wrong Salt"}
       </div>
       <div
         className="data-password"
-        style={{ display: passwordVisible ? "block" : "none" }}
-      >
-        {decrypt(data.password)}
+        >
+        {decrypt(data.password) ? decrypt(data.password) : "Wrong Salt"}
       </div>
+        </div> : ''}
       {showErrorMessage && <div className="text-red-600">Wrong PIN</div>}
     </div>
   );

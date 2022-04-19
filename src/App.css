@@ -4,10 +4,10 @@
   --color-secondary: #0f9e9e;
   --color-text: #fff;
 
-  --color-bg: #ffe4fc;
+  /* --color-bg: #ffe4fc;
   --color-primary: #fd9ef0;
   --color-secondary: #ff85c8;
-  --color-text: #70284a;
+  --color-text: #70284a; */
 }
 body {
   background-color: var(--color-bg);

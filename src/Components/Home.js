@@ -13,12 +13,19 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash, faGear } from "@fortawesome/free-solid-svg-icons";
-import { Tooltip } from "@mantine/core";
+import {
+  faEye,
+  faEyeSlash,
+  faGear,
+  faMoon,
+  faSun,
+} from "@fortawesome/free-solid-svg-icons";
+import { Modal, Notification, Switch, Tooltip } from "@mantine/core";
+import { Check, X } from "tabler-icons-react";
 
 const Home = () => {
   var CryptoJS = require("crypto-js");
-  const salt = "3521853281";
+
   const [uid, setUid] = useState("");
   const [name, setName] = useState("");
   const [login, setLogin] = useState("");
@@ -26,14 +33,29 @@ const Home = () => {
   const [data, setData] = useState([]);
   const [pin, setPin] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [settingsVisible, setSettingVisible] = useState(false);
+  const [salt, setSalt] = useState("");
+  const [tempSalt, setTempSalt] = useState("");
   const [pink, setPink] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [showError, setShowError] = useState(false);
   const auth = getAuth();
 
   let navigate = useNavigate();
 
+  const handleConfirm = (e) => {
+    e.preventDefault();
+    localStorage.setItem("salt", JSON.stringify(tempSalt));
+    setSalt(tempSalt);
+    setShowError(false);
+    setShowConfirm(true);
+    setTimeout(() => {
+      setShowConfirm(false);
+    }, 2000);
+  };
+
   const handleColorChange = () => {
     setPink(!pink);
-    console.log("pink to save", pink);
     localStorage.setItem("pink", JSON.stringify(!pink));
   };
 
@@ -62,13 +84,20 @@ const Home = () => {
     setPass(pass);
     setPasswordVisible(true);
   };
-
+  const hash = (pin) => {
+    var hash = CryptoJS.HmacSHA256(pin, "32817321");
+    return hash.toString(CryptoJS.enc.Hex);
+  };
   const encrypt = (text) => {
     return CryptoJS.DES.encrypt(text, salt).toString();
   };
 
   const decrypt = (text) => {
-    return CryptoJS.DES.decrypt(text, salt).toString(CryptoJS.enc.Utf8);
+    try {
+      return CryptoJS.DES.decrypt(text, salt).toString(CryptoJS.enc.Utf8);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const handleInputChange = (event, setter) => {
@@ -77,26 +106,18 @@ const Home = () => {
 
   //checking if pin exists in database, if not setting up new pin
   const handle_pin = async () => {
-    const docRef = doc(db, "users", uid);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.data().pin) {
-      if (pin !== docSnap.data().pin) {
-        setPin(decrypt(docSnap.data().pin));
-        localStorage.setItem("pin", JSON.stringify(docSnap.data().pin));
-      }
+    if (localStorage.getItem("pin")) {
+      setPin(localStorage.getItem("pin"));
       return true;
     }
     set_new_pin();
     return false;
   };
-
   //setting up new pin
-  const set_new_pin = async () => {
-    const docRef = doc(db, "users", uid);
+  const set_new_pin = () => {
     var new_pin = window.prompt("Set new PIN: ");
-    var data = { pin: encrypt(new_pin) };
-    await setDoc(docRef, data);
-    setPin(new_pin);
+    localStorage.setItem("pin", JSON.stringify(hash(new_pin)));
+    setPin(hash(new_pin));
   };
 
   //checking if entered pi is correct
@@ -106,7 +127,7 @@ const Home = () => {
       return false;
     }
     var new_pin = window.prompt("Enter PIN: ");
-    if (new_pin === decrypt(pin) && new_pin !== "") return true;
+    if (hash(new_pin) === pin && new_pin !== "") return true;
 
     return false;
   };
@@ -122,6 +143,7 @@ const Home = () => {
 
   const signOut = () => {
     auth.signOut();
+    setUid('')
     localStorage.clear();
   };
 
@@ -129,7 +151,7 @@ const Home = () => {
     event.preventDefault();
     const newItem = {
       name: name,
-      login: login,
+      login: encrypt(login),
       password: encrypt(pass),
     };
     await addDoc(collection(db, "users", uid, "passwords"), newItem);
@@ -145,7 +167,7 @@ const Home = () => {
   const editItem = async (editName, editLogin, editPass, id) => {
     const newData = {
       name: editName,
-      login: editLogin,
+      login: encrypt(editLogin),
       password: encrypt(editPass),
     };
     await setDoc(doc(db, "users", uid, "passwords", id), newData);
@@ -154,13 +176,23 @@ const Home = () => {
   //check if color is in memory
   useEffect(() => {
     try {
+      if (localStorage.getItem("salt")) {
+        setTempSalt(JSON.parse(localStorage.getItem("salt")));
+        setSalt(JSON.parse(localStorage.getItem("salt")));
+      } else {
+        setShowError(true);
+        setSalt("");
+        setTempSalt("");
+      }
       if (localStorage.getItem("data"))
         setData(JSON.parse(localStorage.getItem("data")));
       if (localStorage.getItem("pin"))
         setPin(JSON.parse(localStorage.getItem("pin")));
+      else {
+        handle_pin();
+      }
       const local_pink = localStorage.getItem("pink");
-      console.log(local_pink);
-      if (local_pink == "true") {
+      if (local_pink === "true") {
         setPink(true);
       } else {
         setPink(false);
@@ -186,21 +218,60 @@ const Home = () => {
           localStorage.setItem("data", JSON.stringify(fetched_data));
         }
       });
-      handle_pin();
     }
   }, [uid]);
 
   return (
     <div>
+      <Modal
+        title="Settings"
+        opened={settingsVisible}
+        onClose={() => setSettingVisible(false)}
+        classNames={{ modal: "modal-overlay" }}
+      >
+        <div>
+          <div
+            className="p-5 cursor-pointer text-center btn "
+            onClick={handleColorChange}
+          >
+            Page Color:
+            <FontAwesomeIcon className="px-3" icon={pink ? faSun : faMoon} />
+          </div>
+          <div className="p-5">
+            <form onSubmit={(e) => handleConfirm(e)}>
+              <label htmlFor="Salt" className="p-3 pl-0 text-[1.2rem]">
+                Key:
+              </label>
+              <br />
+              <input
+                required
+                type="text"
+                id="Salt"
+                className="btn"
+                value={tempSalt}
+                onChange={(event) => handleInputChange(event, setTempSalt)}
+              />
+              <br />
+              <input type="submit" className="btn my-3" value="Save" />
+            </form>
+          </div>
+        </div>
+      </Modal>
+
       <div className="signOut">
         <Tooltip
           classNames={{ body: "tooltip", arrow: "tooltip" }}
-          label="Change colors"
+          label="Open Settings"
           withArrow
           position="bottom"
           placement="center"
         >
-          <button className="px-5" onClick={handleColorChange}>
+          <button
+            className="px-5"
+            onClick={() => {
+              setSettingVisible(!settingsVisible);
+            }}
+          >
             <FontAwesomeIcon icon={faGear} />
           </button>
         </Tooltip>
@@ -293,6 +364,26 @@ const Home = () => {
           />
         ))}
       </div>
+
+      <Notification
+        icon={<X size={18} />}
+        className={`fixed right-6 bottom-3 w-48 border-none ${
+          showError ? "visible" : "hidden"
+        }`}
+        color="red"
+        title="Salt is empty!"
+        onClose={() => setShowError(false)}
+      >
+        Please enter key!
+      </Notification>
+      <Notification
+        icon={<Check size={18} />}
+        className={`fixed right-6 bottom-3 w-48 border-none ${
+          showConfirm ? "visible" : "hidden"
+        }`}
+        color="teal"
+        title="Salt saved"
+      ></Notification>
     </div>
   );
 };
