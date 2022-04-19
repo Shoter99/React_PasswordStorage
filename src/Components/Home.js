@@ -19,10 +19,6 @@ const Home = () => {
   const [pin, setPin] = useState('')
   const [passwordVisible, setPasswordVisible] = useState(false)
   const [pink, setPink] = useState(false)
-  const [openEdit, setOpenEdit] = useState(false)
-  const [editDataName, setEditDataName] = useState('')
-  const [editDataLogin, setEditDataLogin] = useState('')
-  const [editDataPassword, setEditDataPassword] = useState('')
   const auth = getAuth()
   
   let navigate = useNavigate()
@@ -83,8 +79,11 @@ const Home = () => {
     const docRef = doc(db, 'users', uid)
     const docSnap = await getDoc(docRef)
     if (docSnap.data().pin){
-       setPin(decrypt(docSnap.data().pin))
-       return true
+      if(pin !== docSnap.data().pin){
+        setPin(decrypt(docSnap.data().pin))
+        localStorage.setItem('pin', JSON.stringify(docSnap.data().pin))
+      }
+      return true
     }
     set_new_pin()
     return false
@@ -102,12 +101,12 @@ const Home = () => {
   
   //checking if entered pi is correct
   const check_pin = () => {
-    if (pin == '') { 
+    if (pin === '') { 
       handle_pin()
       return false
     }
     var new_pin = window.prompt('Enter PIN: ')
-    if (new_pin == pin && new_pin != "") return true
+    if (new_pin === decrypt(pin) && new_pin !== "") return true
 
     return false
   }
@@ -126,6 +125,7 @@ const Home = () => {
   
   const signOut = () =>{
     auth.signOut()
+    localStorage.clear()
   }
   
   
@@ -157,6 +157,8 @@ const Home = () => {
   //check if color is in memory
   useEffect(() => {
     try{
+      setData(JSON.parse(localStorage.getItem('data')))
+      setPin(JSON.parse(localStorage.getItem('pin')))
       const local_pink = localStorage.getItem('pink')
       console.log(local_pink)
       if(local_pink == 'true'){
@@ -175,9 +177,11 @@ const Home = () => {
   useEffect(() =>{
     if( uid !== ""){
       onSnapshot(collection(db, 'users', uid, 'passwords'), (snapshot) => {
-        const data = snapshot.docs.map(doc => ({...doc.data(), id: doc.id}))
-        setData(data)
-
+        const fetched_data = snapshot.docs.map(doc => ({...doc.data(), id: doc.id}))
+        if (fetched_data !== data){
+          setData(fetched_data)
+          localStorage.setItem('data', JSON.stringify(fetched_data))
+        }
       }
     );
     handle_pin()
