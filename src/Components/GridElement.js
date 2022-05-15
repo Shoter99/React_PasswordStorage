@@ -8,32 +8,45 @@ const GridElement = ({ data, deleteItem, editItem, decrypt, check_pin }) => {
   const [copied, setCopied] = useState(true);
   const [showEdit, setShowEdit] = useState(false);
   const [editName, setEditName] = useState(data.name);
-  const [editLogin, setEditLogin] = useState(decrypt(data.login) ? decrypt(data.login) : "");
-  const [editPass, setEditPass] = useState(decrypt(data.password) ? decrypt(data.password) : "");
+  const [editLogin, setEditLogin] = useState(
+    decrypt(data.login) ? decrypt(data.login) : ""
+  );
+  const [editPass, setEditPass] = useState(
+    decrypt(data.password) ? decrypt(data.password) : ""
+  );
   const [editPassVisible, setEditPassVisible] = useState(false);
   const [showEditErrorMessage, setEditErrorMessage] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
+  const [showPinDialog, setShowPinDialog] = useState(false);
+  const [pinInput, setPinInput] = useState("");
 
   const togglePassword = (
     passwordVisible,
     setPasswordVisible,
     setErrorMessage
   ) => {
-    if (passwordVisible) {
-      setPasswordVisible(false);
-      return;
-    }
-    if (check_pin()) {
+    if (check_pin(pinInput)) {
+      setPinInput("");
       setPasswordVisible(!passwordVisible);
     } else {
+      setPinInput("");
       setErrorMessage(true);
       setTimeout(() => {
         setErrorMessage(false);
       }, 2000);
     }
   };
+  const OpenPinDialog = (passwordVisible) => {
+    if (passwordVisible) {
+      setPasswordVisible(false);
+      return;
+    }
+    setShowPinDialog(true);
+  };
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(decrypt(data.password) ? decrypt(data.password) : "");
+    navigator.clipboard.writeText(
+      decrypt(data.password) ? decrypt(data.password) : ""
+    );
     setCopied(false);
     setTimeout(() => setCopied(true), 2000);
   };
@@ -116,11 +129,7 @@ const GridElement = ({ data, deleteItem, editItem, decrypt, check_pin }) => {
               <button
                 type="button"
                 onClick={() => {
-                  togglePassword(
-                    editPassVisible,
-                    setEditPassVisible,
-                    setEditErrorMessage
-                  );
+                  OpenPinDialog();
                 }}
                 id="togglePassword"
               >
@@ -149,7 +158,7 @@ const GridElement = ({ data, deleteItem, editItem, decrypt, check_pin }) => {
 
         <div className="delete">
           <Tooltip
-            className='z'
+            className="z"
             classNames={{ body: "tooltip", arrow: "tooltip" }}
             label="Delete Item"
             withArrow
@@ -175,27 +184,75 @@ const GridElement = ({ data, deleteItem, editItem, decrypt, check_pin }) => {
       </div>
       <br />
       <div className="show-details">
-        <button
-          onClick={() =>
-            togglePassword(passwordVisible, setPasswordVisible, setErrorMessage)
-          }
-        >
+        <button onClick={() => OpenPinDialog()}>
           {!passwordVisible ? "Show Details" : "Hide Details"}
         </button>
       </div>
-      {passwordVisible ? <div >
-      <div
-        className="data-password"
-        >
-        {decrypt(data.login) ? decrypt(data.login) : "Wrong Salt"}
-      </div>
-      <div
-        className="data-password"
-        >
-        {decrypt(data.password) ? decrypt(data.password) : "Wrong Salt"}
-      </div>
-        </div> : ''}
+      {passwordVisible ? (
+        <div>
+          <br />
+          <div className="data-password">
+            {decrypt(data.login) ? (
+              <>
+                <p className="md:inline">Login: </p>
+                {decrypt(data.login)}
+              </>
+            ) : (
+              "Wrong Key"
+            )}
+          </div>
+          <div className="data-password">
+            {decrypt(data.password) ? (
+              <>
+                <p className="md:inline">Password: </p>
+                {decrypt(data.password)}
+              </>
+            ) : (
+              "Wrong Key"
+            )}
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
       {showErrorMessage && <div className="text-red-600">Wrong PIN</div>}
+      {showPinDialog ? (
+        <Modal
+          title="Enter PIN: "
+          opened={true}
+          onClose={() => {
+            setShowPinDialog(false);
+            setPinInput("");
+          }}
+          withCloseButton={false}
+          classNames={{ modal: "modal-overlay" }}
+        >
+          <div className="p-5">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                togglePassword(
+                  passwordVisible,
+                  setPasswordVisible,
+                  setErrorMessage
+                );
+                setShowPinDialog(false);
+              }}
+            >
+              <input
+                autoFocus
+                id="pinInput"
+                className="btn"
+                type="number"
+                value={pinInput}
+                onChange={(e) => setPinInput(e.target.value)}
+              />
+            </form>
+          </div>
+        </Modal>
+      ) : (
+        ""
+      )}
     </div>
   );
 };

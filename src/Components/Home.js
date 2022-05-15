@@ -39,6 +39,7 @@ const Home = () => {
   const [pink, setPink] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [showError, setShowError] = useState(false);
+
   const auth = getAuth();
 
   let navigate = useNavigate();
@@ -121,12 +122,11 @@ const Home = () => {
   };
 
   //checking if entered pi is correct
-  const check_pin = () => {
+  const check_pin = (new_pin) => {
     if (pin === "") {
       handle_pin();
       return false;
     }
-    var new_pin = window.prompt("Enter PIN: ");
     if (hash(new_pin) === pin && new_pin !== "") return true;
 
     return false;
@@ -143,7 +143,7 @@ const Home = () => {
 
   const signOut = () => {
     auth.signOut();
-    setUid('')
+    setUid("");
     localStorage.clear();
   };
 
