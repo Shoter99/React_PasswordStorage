@@ -7,7 +7,7 @@ import { onSnapshot, collection, doc, setDoc, addDoc, deleteDoc, getDoc } from '
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash, faGear } from '@fortawesome/free-solid-svg-icons'
 import { Modal, Tooltip } from '@mantine/core'
-
+import { DownloadData } from '../utils/DownloadData'
 const Home = () => {
   var CryptoJS = require("crypto-js")
   const salt = '3521853281'
@@ -203,6 +203,13 @@ const Home = () => {
           </Tooltip>
           <button className='btn' onClick={signOut}>Log out</button>
         </div>
+        <button onClick={() => DownloadData({
+          name: 'testname',
+          login: 'testlogin',
+          password: 'testpassword'
+          
+
+        })}>Download Data</button>
         <div className='add-item-wrapper'>
 
           <div className='add-item blue-border relative'>
